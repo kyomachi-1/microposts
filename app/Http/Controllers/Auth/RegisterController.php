@@ -27,7 +27,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -37,6 +37,21 @@ class RegisterController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
+
+        /*
+        Contoller の __construct() でミドルウェア(middleware)を設定することができます。 
+        Laravel ではミドルウェアは Controller にアクセスする前に事前に確認される条件と思えば良いです。
+        
+        RegisterController インスタンスでのミドルウェア設定は、guestです。
+        guest とはログイン認証されていない閲覧者のことです。
+
+        Register は登録するという意味なので、ユーザー登録をするときは、
+        ログインしていてはできないということです。
+        
+        login しているときにユーザー登録にアクセスした場合は、
+        指定のリダイレクト先に飛ばされます。
+        */
+
     }
 
     /**

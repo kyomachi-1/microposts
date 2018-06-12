@@ -35,5 +35,11 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+
+    /* logout アクション以外では guest である必要があるという条件を持ったミドルウェアが設定されています。
+        guest とは、ログイン認証されていない閲覧者のことです。
+        つまり、 logout アクション以外ではログイン認証されていないことが必要という条件です。
+        これを満たさない（既にログインしているのに login アクションにアクセスした場合など）は、
+        指定のリダイレクト先へ飛ばされます。*/
     }
 }
