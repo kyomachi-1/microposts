@@ -19,7 +19,7 @@ Route::get('/', function () {
 });
 
 /*
-Lesson12　6.2　ユーザ登録のルーティング追加
+Lesson12　6.2 ユーザ登録のルーティング追加
 
 ->name() はこのルーティングに名前を付けているだけです。
 Form や link_to_route() で使用します。
@@ -27,3 +27,11 @@ Form や link_to_route() で使用します。
 
 Route::get('signup', 'Auth\RegisterController@showRegistrationForm')->name('signup.get');
 Route::post('signup', 'Auth\RegisterController@register')->name('signup.post');
+
+/*
+Lesson12 7.1 ログイン機能のルーティング追加
+*/
+
+Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
+Route::post('login', 'Auth\LoginController@login')->name('login.post');
+Route::get('logout', 'Auth\LoginController@logout')->name('logout.get');

@@ -9,6 +9,7 @@
         <div class="col-md-6 col-md-offset-3">
 
             {!! Form::open(['route' => 'signup.post']) !!}
+            <!-- Form:: は laravelcollective を参照 -->
                 <div class="form-group">
                     {!! Form::label('name', 'Name') !!}
                     {!! Form::text('name', old('name'), ['class' => 'form-control']) !!}
