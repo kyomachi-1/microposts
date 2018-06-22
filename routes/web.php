@@ -54,6 +54,13 @@ Route::group(['middleware' => ['auth']], function () {
         Route::delete('unfollow', 'UserFollowController@destroy')->name('user.unfollow');
         Route::get('followings', 'UsersController@followings')->name('users.followings');
         Route::get('followers', 'UsersController@followers')->name('users.followers');
+        Route::get('favoriteMicroposts', 'FavoritesController@index')->name('favorites.favoriteMicroposts');
+    });
+
+    /* 課題：お気に入り機能 */
+    Route::group(['prefix' => 'microposts/{micropost_id}'], function () {
+        Route::post('favorite', 'FavoritesController@store')->name('favorites.favorite');
+        Route::delete('unfavorite', 'FavoritesController@destroy')->name('favorites.unfavorite');
     });
 
     Route::resource('microposts', 'MicropostsController', ['only' => ['store', 'destroy']]); /*Lesson12 9.2*/

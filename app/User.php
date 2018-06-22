@@ -70,10 +70,10 @@ class User extends Authenticatable
         $this->followings()->attach($userId);
         return true;
     }
-}
+    }
 
     public function unfollow($userId)
-{
+    {
     // 既にフォローしているかの確認
     $exist = $this->is_following($userId);
     // 自分自身ではないかの確認
@@ -87,15 +87,62 @@ class User extends Authenticatable
         // 未フォローであれば何もしない
         return false;
     }
-}
+    }
 
     public function is_following($userId) {
     return $this->followings()->where('follow_id', $userId)->exists();
-}
+    }
     public function feed_microposts()
     {
         $follow_user_ids = $this->followings()-> pluck('users.id')->toArray();
         $follow_user_ids[] = $this->id;
         return Micropost::whereIn('user_id', $follow_user_ids);
     }
+
+    public function favoriteMicroposts()
+    {
+        return $this->belongsToMany(Micropost::class, 'favorites', 'user_id', 'micropost_id')->withTimestamps();
+    }
+
+    public function favorite($micropostId)
+    {
+    // 既にお気に入りにしているかの確認
+    $exist = $this->isFavorite($micropostId);
+
+    if ($exist) {
+        // 既にお気に入りにしていれば何もしない
+        return false;
+    } else {
+        // お気に入りにされていなければ、お気に入りに追加する
+        $this->favoriteMicroposts()->attach($micropostId);
+        return true;
+    }
+    }
+
+    public function unfavorite($micropostId)
+    {
+    // 既にお気に入りにしているかの確認
+    $exist = $this->isFavorite($micropostId);
+
+    if ($exist) {
+        // 既にお気に入りにしていれば、お気に入りを外す
+        $this->favoriteMicroposts()->detach($micropostId);
+        return true;
+    } else {
+        // 既にお気に入りを外していれば、何もしない
+        return false;
+    }
+    }
+    public function isFavorite($micropostId) {
+    return $this->favoriteMicroposts()->where('micropost_id', $micropostId)->exists();
+    }
+
+    public function feed_favoriteMicroposts()
+    {
+        $favorite_micropost_ids = $this->favoriteMicroposts()-> pluck('favorites.micropost_id')->toArray();
+        $favorite_micropost_ids[] = $this->id; 
+        return Micropost::whereIn('id', $favorite_micropost_ids);
+    }
+
+
 }
